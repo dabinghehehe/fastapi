@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import true
 from starlette.middleware.sessions import SessionMiddleware
 from config import settings
 from fastapi.staticfiles import StaticFiles
@@ -47,7 +48,7 @@ application.add_middleware(
     SessionMiddleware,
     secret_key=settings.SECRET_KEY,
     session_cookie=settings.SESSION_COOKIE,
-    # max_age=settings.SESSION_MAX_AGE
+    max_age=settings.SESSION_MAX_AGE
 )
 
 # 路由
@@ -59,3 +60,7 @@ application.mount(
 application.state.views = Jinja2Templates(directory=settings.TEMPLATE_DIR)
 
 app = application
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("app:app", reload=True)
